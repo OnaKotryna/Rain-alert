@@ -2,10 +2,10 @@ import requests
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-from twilio.rest import Client
+
+from sms import send_sms
 
 load_dotenv()
-
 
 def is_umbrella_needed():
     parameters = {
@@ -26,19 +26,6 @@ def is_umbrella_needed():
             return True, time.hour
     return False, None
 
-
-def send_sms(text):
-    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-    client = Client(account_sid, auth_token)
-
-    message = client.messages.create(
-        from_=os.getenv("FROM_NUMBER"),
-        body=text,
-        to=os.getenv("TO_NUMBER")
-    )
-
-    # print(message.sid)
     
 umbrella, time = is_umbrella_needed()
 if umbrella:
